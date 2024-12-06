@@ -1,0 +1,21 @@
+{
+    "name": "ecomni/m2-webp",
+    "description": "Ecomni Webp Module",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "require": {
+        "magento/framework": "*",
+        "rosell-dk/webp-convert": "^2.9"
+    },
+    "license": [
+        "Proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Ecomni\\Webp\\": ""
+        }
+    }
+}
