@@ -15,5 +15,15 @@
         "psr-4": {
             "Ecomni\\Webp\\": ""
         }
+    },
+    "extra": {
+        "patches": {
+            "magento/framework": {
+                "Add support for WebP format to Gd2 image adapter": "patches/magento/framework/gd2-image-adapter-webp.patch"
+            },
+            "magento/module-catalog": {
+                "Add 'webp' to hardcoded array of allowed extensions": "patches/magento/module-catalog/gallery-processor-img-extensions.patch"
+            }
+        }
     }
 }
