@@ -3,8 +3,7 @@
     "description": "Ecomni Webp Module",
     "type": "magento2-module",
     "require": {
-        "magento/framework": "*",
-        "rosell-dk/webp-convert": "^2.9"
+        "magento/framework": "*"
     },
     "license": [
         "Proprietary"
