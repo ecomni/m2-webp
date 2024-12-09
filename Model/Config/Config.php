@@ -4,8 +4,8 @@ namespace Ecomni\Webp\Model\Config;
 
 class Config
 {
-    public const int MAX_PRODUCTS_PER_RUN = 50;
-    public const int QUALITY = 80;
+    public const MAX_PRODUCTS_PER_RUN = 50;
+    public const QUALITY = 80;
     public function __construct(
         protected \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         protected \Magento\Store\Model\StoreManagerInterface $storeManager,
