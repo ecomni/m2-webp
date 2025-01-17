@@ -1,0 +1,14 @@
+Add WebP to array of mimetypes
+===================================================================
+--- a/Controller/Adminhtml/Product/Gallery/Upload.php
++++ b/Controller/Adminhtml/Product/Gallery/Upload.php	(date 1737126763482)
+@@ -34,7 +34,8 @@
+         'jpg' => 'image/jpg',
+         'jpeg' => 'image/jpeg',
+         'gif' => 'image/gif',
+-        'png' => 'image/png'
++        'png' => 'image/png',
++        'webp' => 'image/webp',
+     ];
+
+     /**

@@ -1,0 +1,13 @@
+Add WebP to array of extensions
+===================================================================
+--- a/Model/ResourceModel/Product/Attribute/Backend/Image.php
++++ b/Model/ResourceModel/Product/Attribute/Backend/Image.php	(date 1737130212798)
+@@ -60,7 +60,7 @@
+         try {
+             /** @var $uploader \Magento\MediaStorage\Model\File\Uploader */
+             $uploader = $this->_fileUploaderFactory->create(['fileId' => $this->getAttribute()->getName()]);
+-            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
++            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png', 'webp']);
+             $uploader->setAllowRenameFiles(true);
+             $uploader->setFilesDispersion(true);
+         } catch (\Exception $e) {

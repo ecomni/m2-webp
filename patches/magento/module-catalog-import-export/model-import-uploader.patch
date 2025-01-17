@@ -1,0 +1,12 @@
+Add WebP to array of mimetypes
+===================================================================
+--- a/Model/Import/Uploader.php
++++ b/Model/Import/Uploader.php	(date 1737126290331)
+@@ -56,7 +56,7 @@
+         'jpeg' => 'image/jpeg',
+         'gif' => 'image/gif',
+         'png' => 'image/png',
++        'webp' => 'image/webp',
+     ];
+
+     public const DEFAULT_FILE_TYPE = 'application/octet-stream';

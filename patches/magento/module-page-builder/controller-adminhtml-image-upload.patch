@@ -1,0 +1,18 @@
+Add WebP to array of mimetypes
+===================================================================
+--- a/Controller/Adminhtml/ContentType/Image/Upload.php
++++ b/Controller/Adminhtml/ContentType/Image/Upload.php	(date 1737127741645)
+@@ -108,11 +108,11 @@
+         // Set our parameters
+         $fileUploader->setFilesDispersion(false);
+         $fileUploader->setAllowRenameFiles(true);
+-        $fileUploader->setAllowedExtensions(['jpeg','jpg','png','gif']);
++        $fileUploader->setAllowedExtensions(['jpeg','jpg','png','gif','webp']);
+         $fileUploader->setAllowCreateFolders(true);
+
+         try {
+-            if (!$fileUploader->checkMimeType(['image/png', 'image/jpeg', 'image/gif'])) {
++            if (!$fileUploader->checkMimeType(['image/png', 'image/jpeg', 'image/gif', 'image/webp'])) {
+                 throw new \Magento\Framework\Exception\LocalizedException(__('File validation failed.'));
+             }
+

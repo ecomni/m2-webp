@@ -19,10 +19,40 @@
     "extra": {
         "patches": {
             "magento/framework": {
-                "Add support for WebP format to Gd2 image adapter": "patches/magento/framework/gd2-image-adapter-webp.patch"
+                "Add support for WebP format to Gd2 image adapter": "patches/magento/framework/gd2-image-adapter-webp.patch",
+                "Add WebP to array of mimetypes": "patches/magento/framework/image-processor.patch",
+                "Add WebP to array of mimetypes": "patches/magento/framework/driver-file-mime.patch",
+                "Add WebP to array of mimetypes": "patches/magento/framework/file-mime.patch"
+            },
+            "magento/module-catalog-import-export": {
+                "Add WebP to array of mimetypes": "patches/magento/module-catalog-import-export/model-import-uploader.patch"
             },
             "magento/module-catalog": {
-                "Add 'webp' to hardcoded array of allowed extensions": "patches/magento/module-catalog/gallery-processor-img-extensions.patch"
+                "Add 'webp' to hardcoded array of allowed extensions": "patches/magento/module-catalog/gallery-processor-img-extensions.patch",
+                "Add WebP to array of mimetypes": "patches/magento/module-catalog/gallery-mime-type-extension-map.patch",
+                "Add WebP to array of mimetypes": "patches/magento/module-catalog/controller-adminhtml-product-gallery-upload.patch",
+                "Add WebP to array of extensions": "patches/magento/module-catalog/model-resourcemodel-product-attribute-backend-image.patch"
+            },
+            "magento/module-media-storage": {
+                "Add WebP to array of mimetypes": "patches/magento/module-media-storage/model-file-validator-image.patch"
+            },
+            "magento/module-page-builder": {
+                "Add WebP to array of mimetypes": "patches/magento/module-page-builder/controller-adminhtml-image-upload.patch"
+            },
+            "magento/module-config": {
+                "Add WebP to array of extensions": "patches/magento/module-config/model-config-backend-image.patch",
+                "Add WebP to array of extensions": "patches/magento/module-config/model-config-backend-image-logo.patch"
+            },
+            "magento/module-swatches": {
+                "Add WebP to array of extensions": "patches/magento/module-swatches/controller-adminhtml-iframe-show.patch"
+            },
+            "magento/module-theme": {
+                "Add WebP to array of extensions": "patches/magento/module-theme/helper-storage.patch",
+                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-logo.patch",
+                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-image.patch"
+            },
+            "magento/module-cms": {
+                "Add webp to list of allowed extensions": "patches/magento/module-cms/di-xml.patch"
             }
         }
     }

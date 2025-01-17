@@ -1,0 +1,12 @@
+Add WebP to array of extensions
+===================================================================
+--- a/Model/Config/Backend/Image/Logo.php
++++ b/Model/Config/Backend/Image/Logo.php	(date 1737129479088)
+@@ -49,6 +49,6 @@
+      */
+     protected function _getAllowedExtensions()
+     {
+-        return ['jpg', 'jpeg', 'gif', 'png'];
++        return ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+     }
+ }

@@ -1,0 +1,13 @@
+Add WebP to array of extensions
+===================================================================
+--- a/Controller/Adminhtml/Iframe/Show.php
++++ b/Controller/Adminhtml/Iframe/Show.php	(date 1737129561936)
+@@ -79,7 +79,7 @@
+     {
+         try {
+             $uploader = $this->uploaderFactory->create(['fileId' => 'datafile']);
+-            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
++            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png', 'webp']);
+             /** @var \Magento\Framework\Image\Adapter\AdapterInterface $imageAdapter */
+             $imageAdapter = $this->adapterFactory->create();
+             $uploader->addValidateCallback('catalog_product_image', $imageAdapter, 'validateUploadFile');

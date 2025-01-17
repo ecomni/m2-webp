@@ -1,0 +1,12 @@
+Add webp to array of mimetypes
+===================================================================
+--- a/Filesystem/Driver/File/Mime.php
++++ b/Filesystem/Driver/File/Mime.php	(date 1737125646342)
+@@ -41,7 +41,7 @@
+         'tif' => 'image/tiff',
+         'svg' => 'image/svg+xml',
+         'svgz' => 'image/svg+xml',
++        'webp' => 'image/webp',
+
+         // archives
+         'zip' => 'application/zip',
