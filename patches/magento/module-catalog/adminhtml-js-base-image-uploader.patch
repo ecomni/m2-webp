@@ -1,0 +1,13 @@
+Add webp to array of allowed extensions
+===================================================================
+--- a/view/adminhtml/web/catalog/base-image-uploader.js
++++ b/view/adminhtml/web/catalog/base-image-uploader.js	(date 1737382408717)
+@@ -161,7 +161,7 @@
+
+             const uppy = new Uppy.Uppy({
+                 restrictions: {
+-                    allowedFileTypes: ['.gif', '.jpeg', '.jpg', '.png'],
++                    allowedFileTypes: ['.gif', '.jpeg', '.jpg', '.png', '.webp'],
+                     maxFileSize: this.element.data('maxFileSize')
+                 },
+

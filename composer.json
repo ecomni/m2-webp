@@ -31,7 +31,8 @@
                 "Add 'webp' to hardcoded array of allowed extensions": "patches/magento/module-catalog/gallery-processor-img-extensions.patch",
                 "Add WebP to array of mimetypes": "patches/magento/module-catalog/gallery-mime-type-extension-map.patch",
                 "Add WebP to array of mimetypes": "patches/magento/module-catalog/controller-adminhtml-product-gallery-upload.patch",
-                "Add WebP to array of extensions": "patches/magento/module-catalog/model-resourcemodel-product-attribute-backend-image.patch"
+                "Add WebP to array of extensions": "patches/magento/module-catalog/model-resourcemodel-product-attribute-backend-image.patch",
+                "Add webp to array of allowed extensions": "patches/magento/module-catalog/adminhtml-js-base-image-uploader.patch"
             },
             "magento/module-media-storage": {
                 "Add WebP to array of mimetypes": "patches/magento/module-media-storage/model-file-validator-image.patch"
