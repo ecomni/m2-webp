@@ -53,6 +53,12 @@
             },
             "magento/module-cms": {
                 "Add webp to list of allowed extensions": "patches/magento/module-cms/di-xml.patch"
+            },
+            "magento/module-backend": {
+                "Add webp to array of allowed extensions": "patches/magento/module-backend/adminhtml-js-media-uploader.patch"
+            },
+            "magento/module-media-gallery-synchronization": {
+                "Add webp to list of allowed extensions": "patches/magento/module-media-gallery-synchronization/di.patch"
             }
         }
     }

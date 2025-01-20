@@ -1,0 +1,13 @@
+Add webp to array of allowed extensions.
+===================================================================
+--- a/view/adminhtml/web/js/media-uploader.js
++++ b/view/adminhtml/web/js/media-uploader.js	(date 1737371509243)
+@@ -42,7 +42,7 @@
+                 targetElement = this.element.find('.fileinput-button.form-buttons')[0],
+                 uploadUrl = $(uploaderElement).attr('data-url'),
+                 fileId = null,
+-                allowedExt = ['jpeg', 'jpg', 'png', 'gif'],
++                allowedExt = ['jpeg', 'jpg', 'png', 'gif', 'webp'],
+                 allowedResize = false,
+                 options = {
+                     proudlyDisplayPoweredByUppy: false,
