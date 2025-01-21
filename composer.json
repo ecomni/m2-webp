@@ -3,7 +3,10 @@
     "description": "Ecomni Webp Module",
     "type": "magento2-module",
     "require": {
-        "magento/framework": "*"
+        "magento/framework": "*",
+        "magento/module-catalog": "*",
+        "magento/module-page-builder": "*",
+        "magento/module-media-gallery-synchronization": "*"
     },
     "license": [
         "Proprietary"
@@ -52,14 +55,8 @@
                 "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-logo.patch",
                 "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-image.patch"
             },
-            "magento/module-cms": {
-                "Add webp to list of allowed extensions": "patches/magento/module-cms/di-xml.patch"
-            },
             "magento/module-backend": {
                 "Add webp to array of allowed extensions": "patches/magento/module-backend/adminhtml-js-media-uploader.patch"
-            },
-            "magento/module-media-gallery-synchronization": {
-                "Add webp to list of allowed extensions": "patches/magento/module-media-gallery-synchronization/di.patch"
             }
         }
     }
