@@ -1,12 +1,12 @@
 Add webp to array of mimetypes
 ===================================================================
 --- a/File/Mime.php
-+++ b/File/Mime.php	(date 1737125878073)
-@@ -50,7 +50,7 @@
-         'tif' => 'image/tiff',
-         'svg' => 'image/svg+xml',
-         'svgz' => 'image/svg+xml',
++++ b/File/Mime.php	(date 1717557642000)
+@@ -43,6 +43,7 @@
+         'jpe' => 'image/jpeg',
+         'jpeg' => 'image/jpeg',
+         'jpg' => 'image/jpeg',
 +        'webp' => 'image/webp',
-
-         // archives
-         'zip' => 'application/zip',
+         'gif' => 'image/gif',
+         'bmp' => 'image/bmp',
+         'ico' => 'image/vnd.microsoft.icon',
