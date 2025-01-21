@@ -1,0 +1,12 @@
+Add WebP to array of extensions
+===================================================================
+--- a/Model/Design/Backend/Favicon.php
++++ b/Model/Design/Backend/Favicon.php	(date 1737466561126)
+@@ -43,6 +43,6 @@
+      */
+     public function getAllowedExtensions()
+     {
+-        return ['ico', 'png', 'gif', 'jpg', 'jpeg', 'apng'];
++        return ['ico', 'png', 'gif', 'jpg', 'jpeg', 'apng', 'webp'];
+     }
+ }

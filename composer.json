@@ -53,7 +53,8 @@
             "magento/module-theme": {
                 "Add WebP to array of extensions": "patches/magento/module-theme/helper-storage.patch",
                 "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-logo.patch",
-                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-image.patch"
+                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-image.patch",
+                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-favicon.patch"
             },
             "magento/module-backend": {
                 "Add webp to array of allowed extensions": "patches/magento/module-backend/adminhtml-js-media-uploader.patch"
