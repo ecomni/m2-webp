@@ -23,5 +23,40 @@
                 </formElements>
             </field>
         </fieldset>
+        <fieldset name="watermark">
+            <fieldset name="image" sortOrder="10">
+                <field name="watermark_image_image" formElement="imageUploader">
+                    <formElements>
+                        <imageUploader>
+                            <settings>
+                                <allowedExtensions>jpg jpeg gif png webp</allowedExtensions>
+                            </settings>
+                        </imageUploader>
+                    </formElements>
+                </field>
+            </fieldset>
+            <fieldset name="thumbnail" sortOrder="20">
+                <field name="watermark_thumbnail_image" formElement="imageUploader">
+                    <formElements>
+                        <imageUploader>
+                            <settings>
+                                <allowedExtensions>jpg jpeg gif png webp</allowedExtensions>
+                            </settings>
+                        </imageUploader>
+                    </formElements>
+                </field>
+            </fieldset>
+            <fieldset name="small_image" sortOrder="30">
+                <field name="watermark_small_image_image" formElement="imageUploader">
+                    <formElements>
+                        <imageUploader>
+                            <settings>
+                                <allowedExtensions>jpg jpeg gif png webp</allowedExtensions>
+                            </settings>
+                        </imageUploader>
+                    </formElements>
+                </field>
+            </fieldset>
+        </fieldset>
     </fieldset>
 </form>
