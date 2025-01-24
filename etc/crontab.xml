@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
-        <job name="ecomni_webp_convert" instance="Ecomni\Webp\Cron\ConvertCatalogProductGalleryImages" method="execute">
+        <job name="ecomni_webp_convert_catalog_product" instance="Ecomni\Webp\Cron\ConvertProductGalleryImages" method="execute">
             <schedule>10 */1 * * *</schedule>
+        </job>
+        <job name="ecomni_webp_convert_catalog_category" instance="Ecomni\Webp\Cron\ConvertCategoryImages" method="execute">
+            <schedule>15 */1 * * *</schedule>
         </job>
     </group>
 </config>

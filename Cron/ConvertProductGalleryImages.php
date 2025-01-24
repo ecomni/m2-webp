@@ -2,22 +2,18 @@
 
 namespace Ecomni\Webp\Cron;
 
-use Magento\Catalog\Model\ProductRepository;
-use Zend_Db_Select;
-
-class ConvertCatalogProductGalleryImages
+class ConvertProductGalleryImages
 {
     public function __construct(
         protected \Ecomni\Webp\Model\Config\Config $config,
         protected \Psr\Log\LoggerInterface $logger,
         protected \Magento\Framework\App\ResourceConnection $resourceConnection,
-        protected \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        protected ProductRepository $productRepository,
-        protected \Ecomni\Webp\Model\Converter $converter,
+        protected \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        protected \Ecomni\Webp\Model\Converter\ProductConverter $converter,
     ) {
     }
 
-    public function execute()
+    public function execute(): void
     {
         if (!$this->config->isEnabled()) {
             return;
@@ -36,21 +32,12 @@ class ConvertCatalogProductGalleryImages
             )
             ->where('cpemg.value NOT LIKE "%.webp"')
             ->limit($limit);
-        $productsIds = $connection->fetchCol($select);
-
-        /** @var \Magento\Catalog\Model\Product[] $products */
-        $collection = $this->productCollectionFactory->create();
-        // We only need the entity_id, for some reason `removeAllFieldsFromSelect()` does nothing.
-        $collection->getSelect()->reset(Zend_Db_Select::COLUMNS)->columns('e.entity_id');
-        $products = $collection
-            ->addAttributeToSelect('e.entity_id')
-            ->addIdFilter($productsIds)
-            ->getItems();
+        $productIds = $connection->fetchCol($select);
 
         $convertedCount = 0;
-        foreach ($products as $product) {
+        foreach ($productIds as $productId) {
             // We need a loaded product to get the media gallery entries.
-            $product = $this->productRepository->getById($product->getId());
+            $product = $this->productRepository->getById($productId);
             foreach ($product->getMediaGalleryEntries() as $entry) {
                 try {
                     $this->converter->convert($product, $entry);
@@ -60,6 +47,6 @@ class ConvertCatalogProductGalleryImages
                 }
             }
         }
-        $this->logger->info(sprintf('Converted %d images', $convertedCount));
+        $this->logger->info(sprintf('Products: Converted %d images', $convertedCount));
     }
 }

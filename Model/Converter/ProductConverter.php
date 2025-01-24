@@ -1,20 +1,18 @@
 <?php
 
-namespace Ecomni\Webp\Model;
+namespace Ecomni\Webp\Model\Converter;
 
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface as EntryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Attribute\Backend\Media\ImageEntryConverter;
-use Magento\Framework\App\Filesystem\DirectoryList;
 
-class Converter
+class ProductConverter
 {
     public function __construct(
         protected \Magento\Catalog\Api\ProductAttributeMediaGalleryManagementInterface $galleryManagement,
         protected \Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterfaceFactory $entryFactory,
         protected \Magento\Framework\Api\Data\ImageContentInterfaceFactory $imageContentFactory,
-        protected \Magento\Framework\Filesystem\Io\File $file,
-        protected \Ecomni\Webp\Model\Config\Config $config,
+        protected \Ecomni\Webp\Model\WebpConverter $webpConverter,
     ) {
     }
 
@@ -29,16 +27,12 @@ class Converter
     public function convert(ProductInterface $product, EntryInterface $entry): bool
     {
         $mediaPath = $product->getMediaConfig()->getMediaPath($entry->getFile());
-        $url = sprintf('%s/%s/%s', DirectoryList::PUB, DirectoryList::MEDIA, $mediaPath);
-        if ($this->cWebP($url)) {
-            $newPath = str_replace(['.jpg', '.jpeg', '.png'], '.webp', $entry->getFile());
-            $newUrl = str_replace(['.jpg', '.jpeg', '.png'], '.webp', $url);
-            $fileName = $this->file->getPathInfo($newPath)['basename'];
-
+        $webp = $this->webpConverter->convert($mediaPath);
+        if ($webp) {
             $imageContent = $this->imageContentFactory->create();
-            $imageContent->setBase64EncodedData(base64_encode(file_get_contents($newUrl)));
+            $imageContent->setBase64EncodedData(base64_encode(file_get_contents($webp['full_path'])));
             $imageContent->setType('image/webp');
-            $imageContent->setName($fileName);
+            $imageContent->setName($webp['basename']);
 
             $newEntry = $this->entryFactory->create();
             $newEntry->setDisabled(false)
@@ -46,7 +40,7 @@ class Converter
                 ->setPosition($entry->getPosition())
                 ->setTypes($entry->getTypes())
                 ->setContent($imageContent)
-                ->setFile($newPath)
+                ->setFile($webp['path'])
                 ->setMediaType(ImageEntryConverter::MEDIA_TYPE_CODE);
 
             /**
@@ -59,13 +53,5 @@ class Converter
             }
         }
         return false;
-    }
-
-    protected function cWebP(string $url): bool
-    {
-        $quality = $this->config->getQuality();
-        $newUrl = str_replace(['.jpg', '.jpeg', '.png'], '.webp', $url);
-        exec(sprintf('cwebp -q %d %s -o %s', (int)$quality, $url, $newUrl), $output, $resultCode);
-        return $resultCode === 0;
     }
 }
