@@ -59,7 +59,7 @@ class ConvertCategoryImages
     }
 
     /**
-     * Files can be stores as `{image}` or as `catalog/category/{image}` in the database.
+     * Files can be stored as `{image}` or as `catalog/category/{image}` in the database.
      * Here we make sure we always work with the `catalog/category/{image}` format.
      *
      * @param string $filePath

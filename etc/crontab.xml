@@ -7,5 +7,8 @@
         <job name="ecomni_webp_convert_catalog_category" instance="Ecomni\Webp\Cron\ConvertCategoryImages" method="execute">
             <schedule>15 */1 * * *</schedule>
         </job>
+        <job name="ecomni_webp_convert_cms_block" instance="Ecomni\Webp\Cron\ConvertCmsBlockImages" method="execute">
+            <schedule>20 */1 * * *</schedule>
+        </job>
     </group>
 </config>
