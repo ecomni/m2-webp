@@ -9,6 +9,8 @@ class ConvertCmsBlockImages
         protected \Psr\Log\LoggerInterface $logger,
         protected \Magento\Cms\Api\BlockRepositoryInterface $blockRepository,
         protected \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        protected \Magento\Framework\Api\Search\FilterGroupBuilder $filterGroupBuilder,
+        protected \Magento\Framework\Api\FilterBuilder $filterBuilder,
         protected \Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverter $pageBuilderConverter,
     ) {
     }
@@ -19,10 +21,35 @@ class ConvertCmsBlockImages
             return;
         }
 
+        $jpgFilter = $this->filterBuilder
+            ->setField(\Magento\Cms\Api\Data\BlockInterface::CONTENT)
+            ->setValue('%.jpg%')
+            ->setConditionType('like')
+            ->create();
+
+        $jpegFilter = $this->filterBuilder
+            ->setField(\Magento\Cms\Api\Data\BlockInterface::CONTENT)
+            ->setValue('%.jpeg%')
+            ->setConditionType('like')
+            ->create();
+
+        $pngFilter = $this->filterBuilder
+            ->setField(\Magento\Cms\Api\Data\BlockInterface::CONTENT)
+            ->setValue('%.png%')
+            ->setConditionType('like')
+            ->create();
+
+        $imageTypeFilter = $this->filterGroupBuilder
+            ->addFilter($jpgFilter)
+            ->addFilter($jpegFilter)
+            ->addFilter($pngFilter)
+            ->create();
+
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter(\Magento\Cms\Api\Data\BlockInterface::CONTENT, '%data-background-images%', 'like')
-            ->addFilter(\Magento\Cms\Api\Data\BlockInterface::CONTENT, '%.jpg%', 'like')
+            ->setFilterGroups([$imageTypeFilter])
             ->create();
+
         $blocks = $this->blockRepository->getList($searchCriteria)->getItems();
         if (empty($blocks)) {
             return;
