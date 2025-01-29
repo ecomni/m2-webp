@@ -39,7 +39,8 @@ class PageBuilderBackgroundImageConverter
 
             $hasChanges = false;
             $assets = [];
-            if (!empty($images['desktop_image']) && !str_contains($images['desktop_image'], '.webp')) {
+
+            if ($this->isConvertibleImage($images['desktop_image'])) {
                 $desktopImageUrl = $this->normalizeFilePath($images['desktop_image']);
                 if ($webp = $this->processImage($desktopImageUrl)) {
                     /** @var \Magento\MediaGalleryApi\Api\Data\AssetInterface $asset */
@@ -54,7 +55,7 @@ class PageBuilderBackgroundImageConverter
                 }
             }
 
-            if (!empty($images['mobile_image']) && !str_contains($images['mobile_image'], '.webp')) {
+            if ($this->isConvertibleImage($images['mobile_image'])) {
                 $mobileImageUrl = $this->normalizeFilePath($images['mobile_image']);
                 if ($webp = $this->processImage($mobileImageUrl)) {
                     $images['mobile_image'] = $this->encodeFilePath($webp['path']);
@@ -152,5 +153,10 @@ class PageBuilderBackgroundImageConverter
     {
         $filePath = ltrim(str_replace('media', '', $filePath), '/');
         return sprintf('{{media url=%s}}', $filePath);
+    }
+
+    protected function isConvertibleImage(string $path): bool
+    {
+        return str_contains($path, '.png') || str_contains($path, '.jpg') || str_contains($path, '.jpeg');
     }
 }
