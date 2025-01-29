@@ -1,5 +1,35 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverter">
+        <arguments>
+            <argument name="localUrl" xsi:type="object">Ecomni\Webp\Model\Util\LocalUrlProxy</argument>
+            <argument name="webpConverter" xsi:type="object">Ecomni\Webp\Model\WebpConverterProxy</argument>
+            <argument name="createAssetFromFile" xsi:type="object">Magento\MediaGallerySynchronizationApi\Model\CreateAssetFromFileInterfaceProxy</argument>
+            <argument name="saveAssets" xsi:type="object">Magento\MediaGalleryApi\Api\SaveAssetsInterfaceProxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomni\Webp\Model\Converter\ProductConverter">
+        <arguments>
+            <argument name="galleryManagement" xsi:type="object">Magento\Catalog\Api\ProductAttributeMediaGalleryManagementInterfaceProxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomni\Webp\Cron\ConvertProductGalleryImages">
+        <arguments>
+            <argument name="productRepository" xsi:type="object">Magento\Catalog\Api\ProductRepositoryInterfaceProxy</argument>
+            <argument name="converter" xsi:type="object">Ecomni\Webp\Model\Converter\ProductConverterProxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomni\Webp\Cron\ConvertCategoryImages">
+        <arguments>
+            <argument name="categoryRepository" xsi:type="object">Magento\Catalog\Api\CategoryRepositoryInterfaceProxy</argument>
+            <argument name="webpConverter" xsi:type="object">Ecomni\Webp\Model\WebpConverterProxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomni\Webp\Cron\ConvertCmsBlockImages">
+        <arguments>
+            <argument name="pageBuilderConverter" xsi:type="object">Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverterProxy</argument>
+        </arguments>
+    </type>
     <type name="Magento\Framework\Api\ImageContentValidator">
         <arguments>
             <argument name="allowedMimeTypes" xsi:type="array">

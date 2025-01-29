@@ -35,6 +35,9 @@ class ConvertCategoryImages
             ->where('ccev.attribute_id = ea.attribute_id')
             ->where('ccev.value NOT LIKE "%.webp"');
         $categoryIds = $connection->fetchCol($select);
+        if (empty($categoryIds)) {
+            return;
+        }
 
         $convertedCount = 0;
         foreach ($categoryIds as $categoryId) {

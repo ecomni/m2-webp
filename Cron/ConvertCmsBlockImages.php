@@ -7,7 +7,6 @@ class ConvertCmsBlockImages
     public function __construct(
         protected \Ecomni\Webp\Model\Config\Config $config,
         protected \Psr\Log\LoggerInterface $logger,
-        protected \Magento\Framework\App\ResourceConnection $resourceConnection,
         protected \Magento\Cms\Api\BlockRepositoryInterface $blockRepository,
         protected \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         protected \Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverter $pageBuilderConverter,
@@ -25,6 +24,9 @@ class ConvertCmsBlockImages
             ->addFilter(\Magento\Cms\Api\Data\BlockInterface::CONTENT, '%.jpg%', 'like')
             ->create();
         $blocks = $this->blockRepository->getList($searchCriteria)->getItems();
+        if (empty($blocks)) {
+            return;
+        }
 
         $convertedCount = 0;
         foreach ($blocks as $block) {

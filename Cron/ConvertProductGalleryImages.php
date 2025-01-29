@@ -33,6 +33,9 @@ class ConvertProductGalleryImages
             ->where('cpemg.value NOT LIKE "%.webp"')
             ->limit($limit);
         $productIds = $connection->fetchCol($select);
+        if (empty($productIds)) {
+            return;
+        }
 
         $convertedCount = 0;
         foreach ($productIds as $productId) {
