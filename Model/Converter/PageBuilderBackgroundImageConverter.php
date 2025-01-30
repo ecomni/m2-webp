@@ -16,10 +16,9 @@ class PageBuilderBackgroundImageConverter
     ) {
     }
 
-    public function convert(\Magento\Cms\Api\Data\BlockInterface $block): string
+    public function convert(string $html, int &$convertedCount): string
     {
         $document = new \DOMDocument();
-        $html = $block->getContent();
         $document->loadHTML($html);
 
         $xpath = new \DOMXPath($document);
@@ -40,7 +39,7 @@ class PageBuilderBackgroundImageConverter
             $hasChanges = false;
             $assets = [];
 
-            if ($this->isConvertibleImage($images['desktop_image'])) {
+            if ($this->isConvertibleImage($images['desktop_image'] ?? '')) {
                 $desktopImageUrl = $this->normalizeFilePath($images['desktop_image']);
                 if ($webp = $this->processImage($desktopImageUrl)) {
                     /** @var \Magento\MediaGalleryApi\Api\Data\AssetInterface $asset */
@@ -48,6 +47,7 @@ class PageBuilderBackgroundImageConverter
                     try {
                         $assets[] = $this->saveAsset($webp['path']);
                         $hasChanges = true;
+                        $convertedCount++;
                     } catch (\Exception $e) {
                         $this->logger->critical($e->getMessage());
                         continue;
@@ -55,7 +55,7 @@ class PageBuilderBackgroundImageConverter
                 }
             }
 
-            if ($this->isConvertibleImage($images['mobile_image'])) {
+            if ($this->isConvertibleImage($images['mobile_image'] ?? '')) {
                 $mobileImageUrl = $this->normalizeFilePath($images['mobile_image']);
                 if ($webp = $this->processImage($mobileImageUrl)) {
                     $images['mobile_image'] = $this->encodeFilePath($webp['path']);
@@ -84,7 +84,6 @@ class PageBuilderBackgroundImageConverter
     {
         $assetPath = ltrim(str_replace([DirectoryList::PUB, DirectoryList::MEDIA], '', $path), '/');
         $asset = $this->createAssetFromFile->execute($assetPath);
-        $this->logger->debug('Asset: ' . $asset->getPath());
         return $asset;
     }
 
