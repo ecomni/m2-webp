@@ -3,6 +3,7 @@
 This module contains a package of composer patches for the Magento admin, to allow uploading and working with webp images.
 
 It can also automatically update jpg/png images, by converting them and updating their references in the database.
+Anytime you use a jpg/png again, the cron will simply process it again. No worries or hassles for your content team!
 
 This module is inspired on the [WebP2](https://github.com/yireo/Yireo_Webp2) module from [Yireo](https://www.yireo.nl/).
 
@@ -39,7 +40,7 @@ The category attribute is updated afterwards.
 First we fetch blocks/pages that have 'jpg, jpeg or png' in their content.
 The HTML content is loaded into a DOMDocument object and queried for nodes with the `data-background-images` attribute.
 If these nodes contain a jpg/png image, the corresponding file is found & converted. The node attribute gets updated with the new image path, and the block/page HTML is saved.
-This support both the `desktop_background` and `mobile_background` attributes.
+This supports both the `desktop_background` and `mobile_background` attributes.
 
 ## Configs
 
