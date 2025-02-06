@@ -1,7 +1,9 @@
 {
     "name": "ecomni/m2-webp",
-    "description": "Ecomni Webp Module",
+    "license": "OSL-3.0",
+    "description": "Ecomni Webp module to allow uploading webp files in Magento admin and automatically convert existing jpg/png images into webp.",
     "type": "magento2-module",
+    "homepage": "https://www.ecomni.nl",
     "require": {
         "magento/framework": "*",
         "magento/module-cms": "*",
@@ -11,9 +13,6 @@
         "magento/module-media-gallery-integration": "*",
         "magento/module-media-gallery-renditions": "*"
     },
-    "license": [
-        "Proprietary"
-    ],
     "autoload": {
         "files": [
             "registration.php"
@@ -26,17 +25,17 @@
         "patches": {
             "magento/framework": {
                 "Add support for WebP format to Gd2 image adapter": "patches/magento/framework/gd2-image-adapter-webp.patch",
-                "Add WebP to array of mimetypes": "patches/magento/framework/image-processor.patch",
-                "Add WebP to array of mimetypes": "patches/magento/framework/driver-file-mime.patch",
-                "Add WebP to array of mimetypes": "patches/magento/framework/file-mime.patch"
+                "Add WebP to array of mimetypes: image-processor": "patches/magento/framework/image-processor.patch",
+                "Add WebP to array of mimetypes: driver-file-mime": "patches/magento/framework/driver-file-mime.patch",
+                "Add WebP to array of mimetypes: file-mime": "patches/magento/framework/file-mime.patch"
             },
             "magento/module-catalog-import-export": {
-                "Add WebP to array of mimetypes": "patches/magento/module-catalog-import-export/model-import-uploader.patch"
+                "Add WebP to array of mimetypes: import-uploader": "patches/magento/module-catalog-import-export/model-import-uploader.patch"
             },
             "magento/module-catalog": {
                 "Add 'webp' to hardcoded array of allowed extensions": "patches/magento/module-catalog/gallery-processor-img-extensions.patch",
-                "Add WebP to array of mimetypes": "patches/magento/module-catalog/gallery-mime-type-extension-map.patch",
-                "Add WebP to array of mimetypes": "patches/magento/module-catalog/controller-adminhtml-product-gallery-upload.patch",
+                "Add WebP to array of mimetypes: gallery-map": "patches/magento/module-catalog/gallery-mime-type-extension-map.patch",
+                "Add WebP to array of mimetypes: gallery-upload": "patches/magento/module-catalog/controller-adminhtml-product-gallery-upload.patch",
                 "Add WebP to array of extensions": "patches/magento/module-catalog/model-resourcemodel-product-attribute-backend-image.patch",
                 "Add webp to array of allowed extensions": "patches/magento/module-catalog/adminhtml-js-base-image-uploader.patch"
             },
@@ -47,17 +46,17 @@
                 "Add WebP to array of mimetypes": "patches/magento/module-page-builder/controller-adminhtml-image-upload.patch"
             },
             "magento/module-config": {
-                "Add WebP to array of extensions": "patches/magento/module-config/model-config-backend-image.patch",
-                "Add WebP to array of extensions": "patches/magento/module-config/model-config-backend-image-logo.patch"
+                "Add WebP to array of extensions: config-image": "patches/magento/module-config/model-config-backend-image.patch",
+                "Add WebP to array of extensions: config-image-logo": "patches/magento/module-config/model-config-backend-image-logo.patch"
             },
             "magento/module-swatches": {
                 "Add WebP to array of extensions": "patches/magento/module-swatches/controller-adminhtml-iframe-show.patch"
             },
             "magento/module-theme": {
-                "Add WebP to array of extensions": "patches/magento/module-theme/helper-storage.patch",
-                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-logo.patch",
-                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-image.patch",
-                "Add WebP to array of extensions": "patches/magento/module-theme/model-design-backend-favicon.patch"
+                "Add WebP to array of extensions: storage": "patches/magento/module-theme/helper-storage.patch",
+                "Add WebP to array of extensions: logo": "patches/magento/module-theme/model-design-backend-logo.patch",
+                "Add WebP to array of extensions: image": "patches/magento/module-theme/model-design-backend-image.patch",
+                "Add WebP to array of extensions: favicon": "patches/magento/module-theme/model-design-backend-favicon.patch"
             },
             "magento/module-backend": {
                 "Add webp to array of allowed extensions": "patches/magento/module-backend/adminhtml-js-media-uploader.patch"
