@@ -4,9 +4,12 @@
     "type": "magento2-module",
     "require": {
         "magento/framework": "*",
+        "magento/module-cms": "*",
         "magento/module-catalog": "*",
         "magento/module-page-builder": "*",
-        "magento/module-media-gallery-synchronization": "*"
+        "magento/module-media-gallery-synchronization": "*",
+        "magento/module-media-gallery-integration": "*",
+        "magento/module-media-gallery-renditions": "*"
     },
     "license": [
         "Proprietary"

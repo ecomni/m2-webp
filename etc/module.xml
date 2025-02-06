@@ -7,6 +7,8 @@
             <module name="Magento_Cms"/>
             <module name="Magento_PageBuilder"/>
             <module name="Magento_MediaGallerySynchronization"/>
+            <module name="Magento_MediaGalleryIntegration"/>
+            <module name="Magento_MediaGalleryRenditions"/>
         </sequence>
     </module>
 </config>
