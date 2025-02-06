@@ -5,7 +5,7 @@ This module contains a package of composer patches for the Magento admin, to all
 It can also automatically update jpg/png images, by converting them and updating their references in the database.
 Anytime you use a jpg/png again, the cron will simply process it again. No worries or hassles for your content team!
 
-This module is inspired on the [WebP2](https://github.com/yireo/Yireo_Webp2) module from [Yireo](https://www.yireo.nl/).
+This module is inspired on the [Webp2](https://github.com/yireo/Yireo_Webp2) module from [Yireo](https://www.yireo.nl/). If you already have Yireo_Webp2 running, it's fine to keep it active until all images have been replaced. After that, you can disable it for increased performance.
 
 ## Features
 - Upload webp images everywhere in the Magento admin.
@@ -46,10 +46,10 @@ This supports both the `desktop_background` and `mobile_background` attributes.
 
 The module offers a few configs, in the `Ecomni/WebP` panel.
 - `ecomni_webp/general/enabled` Enables the cron.
-- `ecomni_webp/general/max_products_per_run` Cron batch size, default 50.
+- `ecomni_webp/general/max_products_per_run` Cron batch size, default 50. (Only affects the product cron, other crons are not batched)
 - `ecomni_webp/general/quality` Conversion quality used by cwebp, default 80. (Range: 1/100)
 
-Note that the patches that allow you to save webp images in the admin, are always active when you have this module installed. The config only controls the cronjobs.
+Note that the patches that allow you to save webp images in the admin are always active when you have this module installed. The config only controls the cronjobs.
 
 ## Requirements
 
