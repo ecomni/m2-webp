@@ -18,6 +18,9 @@ class WebpConverter
         if (!$this->file->fileExists($url)) {
             return null;
         }
+        if (!$this->isConvertibleImage($url)) {
+            return null;
+        }
         if ($this->cWebP($url)) {
             $newPath = $this->replaceExtensions($filePath);
             return [
@@ -27,6 +30,11 @@ class WebpConverter
             ];
         }
         return null;
+    }
+
+    protected function isConvertibleImage(string $path): bool
+    {
+        return str_contains($path, '.png') || str_contains($path, '.jpg') || str_contains($path, '.jpeg');
     }
 
     protected function replaceExtensions(string $path): string
