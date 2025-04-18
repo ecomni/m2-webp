@@ -34,7 +34,7 @@ class ConvertCmsBlockContent
                     $this->blockRepository->save($item);
                 }
             } catch (\Exception $e) {
-                $this->logger->debug('Exception: ' . $e->getMessage());
+                $this->logger->critical($e->getMessage());
                 continue;
             }
         }

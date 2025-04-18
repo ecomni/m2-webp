@@ -12,14 +12,19 @@ class WebpConverter
     ) {
     }
 
-    public function convert(string $filePath): ?array
+    /**
+     * @param string $filePath
+     * @return array
+     * @throws \Exception
+     */
+    public function convert(string $filePath): array
     {
         $url = $this->normalizeFilePath($filePath);
         if (!$this->file->fileExists($url)) {
-            return null;
+            throw new \Exception(sprintf('File %s does not exist', $url));
         }
         if (!$this->isConvertibleImage($url)) {
-            return null;
+            throw new \Exception(sprintf('File %s is not a convertible image', $url));
         }
         if ($this->cWebP($url)) {
             $newPath = $this->replaceExtensions($filePath);
@@ -29,7 +34,7 @@ class WebpConverter
                 'full_path' => $this->normalizeFilePath($newPath)
             ];
         }
-        return null;
+        throw new \Exception(sprintf('Failed to convert %s', $url));
     }
 
     protected function isConvertibleImage(string $path): bool
@@ -46,7 +51,7 @@ class WebpConverter
     {
         $quality = $this->config->getQuality();
         $newUrl = $this->replaceExtensions($url);
-        exec(sprintf('cwebp -q %d %s -o %s', (int)$quality, $url, $newUrl), $output, $resultCode);
+        exec(sprintf('cwebp -q %d %s -o %s 2>dev/null', (int)$quality, $url, $newUrl), $output, $resultCode);
         return $resultCode === 0;
     }
 

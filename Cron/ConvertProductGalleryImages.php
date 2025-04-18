@@ -45,8 +45,9 @@ class ConvertProductGalleryImages
                 try {
                     $this->converter->convert($product, $entry);
                     $convertedCount++;
-                } catch (\Magento\Framework\Exception\LocalizedException $exception) {
+                } catch (\Exception $exception) {
                     $this->logger->critical($exception->getMessage());
+                    continue;
                 }
             }
         }

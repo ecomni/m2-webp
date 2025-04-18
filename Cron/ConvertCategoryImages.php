@@ -54,7 +54,7 @@ class ConvertCategoryImages
                 $category->setData('image', $webp['basename']);
                 $this->categoryRepository->save($category);
                 $convertedCount++;
-            } catch (\Magento\Framework\Exception\LocalizedException $exception) {
+            } catch (\Exception $exception) {
                 $this->logger->critical($exception->getMessage());
             }
         }

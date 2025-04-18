@@ -13,11 +13,13 @@ class PageBuilderBackgroundImageConverter
         protected \Magento\MediaGallerySynchronizationApi\Model\CreateAssetFromFileInterface $createAssetFromFile,
         protected \Magento\MediaGalleryApi\Api\SaveAssetsInterface $saveAssets,
         protected \Psr\Log\LoggerInterface $logger,
+        protected \Magento\Framework\Filesystem\DirectoryList $directoryList,
     ) {
     }
 
     public function convert(string $html, int &$convertedCount): string
     {
+        chdir($this->directoryList->getRoot());
         $document = new \DOMDocument();
         $document->loadHTML($html);
 
