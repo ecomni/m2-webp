@@ -53,7 +53,7 @@ Note that the patches that allow you to save webp images in the admin are always
 
 ## Requirements
 
-This module is developed for Magento 2.4.7-p1 or higher. Other versions could require small adjustments.
+This module is developed specifically on Magento 2.4.7-p5. Other versions could require small adjustments in the patches, feel free to make a pull-request for version-specific supoprt.
 Your installation should have the `cwebp` package installed.
 
 ## Installation
