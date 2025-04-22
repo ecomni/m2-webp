@@ -9,7 +9,7 @@ class ConvertProductGalleryImages
         protected \Psr\Log\LoggerInterface $logger,
         protected \Magento\Framework\App\ResourceConnection $resourceConnection,
         protected \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        protected \Ecomni\Webp\Model\Converter\ProductConverter $converter,
+        protected \Ecomni\Webp\Model\Processor\ProductProcessor $converter,
     ) {
     }
 
@@ -42,6 +42,9 @@ class ConvertProductGalleryImages
             // We need a loaded product to get the media gallery entries.
             $product = $this->productRepository->getById($productId);
             foreach ($product->getMediaGalleryEntries() as $entry) {
+                if (str_contains($entry->getFile(), '.webp')) {
+                    continue;
+                }
                 try {
                     $this->converter->convert($product, $entry);
                     $convertedCount++;

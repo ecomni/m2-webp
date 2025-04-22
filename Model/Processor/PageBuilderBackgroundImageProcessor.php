@@ -1,15 +1,15 @@
 <?php
 
-namespace Ecomni\Webp\Model\Converter;
+namespace Ecomni\Webp\Model\Processor;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 
-class PageBuilderBackgroundImageConverter
+class PageBuilderBackgroundImageProcessor
 {
     public function __construct(
         protected \Magento\Framework\Serialize\Serializer\Json $json,
         protected \Ecomni\Webp\Model\Util\LocalUrl $localUrl,
-        protected \Ecomni\Webp\Model\WebpConverter $webpConverter,
+        protected \Ecomni\Webp\Model\ConverterPool $converterPool,
         protected \Magento\MediaGallerySynchronizationApi\Model\CreateAssetFromFileInterface $createAssetFromFile,
         protected \Magento\MediaGalleryApi\Api\SaveAssetsInterface $saveAssets,
         protected \Psr\Log\LoggerInterface $logger,
@@ -94,11 +94,12 @@ class PageBuilderBackgroundImageConverter
         if (!$this->isAllowedByImageUrl($imageUrl)) {
             return null;
         }
-        $webp = $this->webpConverter->convert($imageUrl);
-        if (!$webp) {
+        try {
+            return $this->converterPool->convert($imageUrl);
+        } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
             return null;
         }
-        return $webp;
     }
 
     protected function isAllowedByImageUrl(string $imageUrl): bool

@@ -1,18 +1,18 @@
 <?php
 
-namespace Ecomni\Webp\Model\Converter;
+namespace Ecomni\Webp\Model\Processor;
 
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface as EntryInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Attribute\Backend\Media\ImageEntryConverter;
 
-class ProductConverter
+class ProductProcessor
 {
     public function __construct(
         protected \Magento\Catalog\Api\ProductAttributeMediaGalleryManagementInterface $galleryManagement,
         protected \Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterfaceFactory $entryFactory,
         protected \Magento\Framework\Api\Data\ImageContentInterfaceFactory $imageContentFactory,
-        protected \Ecomni\Webp\Model\WebpConverter $webpConverter,
+        protected \Ecomni\Webp\Model\ConverterPool $converterPool,
         protected \Magento\Framework\Filesystem\DirectoryList $directoryList,
     ) {
     }
@@ -27,7 +27,7 @@ class ProductConverter
     {
         chdir($this->directoryList->getRoot());
         $mediaPath = $product->getMediaConfig()->getMediaPath($entry->getFile());
-        $webp = $this->webpConverter->convert($mediaPath);
+        $webp = $this->converterPool->convert($mediaPath);
         $imageContent = $this->imageContentFactory->create();
         $imageContent->setBase64EncodedData(base64_encode(file_get_contents($webp['full_path'])));
         $imageContent->setType('image/webp');

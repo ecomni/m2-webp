@@ -12,7 +12,7 @@ class ConvertCategoryImages
         protected \Psr\Log\LoggerInterface $logger,
         protected \Magento\Framework\App\ResourceConnection $resourceConnection,
         protected \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
-        protected \Ecomni\Webp\Model\WebpConverter $webpConverter,
+        protected \Ecomni\Webp\Model\ConverterPool $converterPool,
     ) {
     }
 
@@ -47,7 +47,7 @@ class ConvertCategoryImages
                 continue;
             }
             try {
-                $webp = $this->webpConverter->convert($imagePath);
+                $webp = $this->converterPool->convert($imagePath);
                 if (!$webp) {
                     continue;
                 }

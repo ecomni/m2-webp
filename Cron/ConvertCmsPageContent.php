@@ -8,7 +8,7 @@ class ConvertCmsPageContent
         protected \Ecomni\Webp\Model\Config\Config $config,
         protected \Psr\Log\LoggerInterface $logger,
         protected \Ecomni\Webp\Model\Search\PageBuilderSearchCriteria $pageBuilderSearchCriteria,
-        protected \Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverter $pageBuilderConverter,
+        protected \Ecomni\Webp\Model\Processor\PageBuilderBackgroundImageProcessor $pageBuilderConverter,
         protected \Magento\Cms\Api\PageRepositoryInterface $pageRepository,
     ) {
     }

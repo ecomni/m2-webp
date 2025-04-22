@@ -1,40 +1,15 @@
 <?php
 
-namespace Ecomni\Webp\Model;
+namespace Ecomni\Webp\Model\Converter;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 
-class WebpConverter
+abstract class AbstractConverter
 {
     public function __construct(
         protected \Magento\Framework\Filesystem\Io\File $file,
         protected \Ecomni\Webp\Model\Config\Config $config,
     ) {
-    }
-
-    /**
-     * @param string $filePath
-     * @return array
-     * @throws \Exception
-     */
-    public function convert(string $filePath): array
-    {
-        $url = $this->normalizeFilePath($filePath);
-        if (!$this->file->fileExists($url)) {
-            throw new \Exception(sprintf('File %s does not exist', $url));
-        }
-        if (!$this->isConvertibleImage($url)) {
-            throw new \Exception(sprintf('File %s is not a convertible image', $url));
-        }
-        if ($this->cWebP($url)) {
-            $newPath = $this->replaceExtensions($filePath);
-            return [
-                'basename' => $this->file->getPathInfo($newPath)['basename'],
-                'path' => $newPath,
-                'full_path' => $this->normalizeFilePath($newPath)
-            ];
-        }
-        throw new \Exception(sprintf('Failed to convert %s', $url));
     }
 
     protected function isConvertibleImage(string $path): bool

@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverter">
+    <type name="Ecomni\Webp\Model\Processor\PageBuilderBackgroundImageProcessor">
         <arguments>
             <argument name="localUrl" xsi:type="object">Ecomni\Webp\Model\Util\LocalUrl\Proxy</argument>
-            <argument name="webpConverter" xsi:type="object">Ecomni\Webp\Model\WebpConverter\Proxy</argument>
+            <argument name="converterPool" xsi:type="object">Ecomni\Webp\Model\ConverterPool\Proxy</argument>
             <argument name="createAssetFromFile" xsi:type="object">Magento\MediaGallerySynchronizationApi\Model\CreateAssetFromFileInterface\Proxy</argument>
             <argument name="saveAssets" xsi:type="object">Magento\MediaGalleryApi\Api\SaveAssetsInterface\Proxy</argument>
         </arguments>
     </type>
-    <type name="Ecomni\Webp\Model\Converter\ProductConverter">
+    <type name="Ecomni\Webp\Model\Processor\ProductProcessor">
         <arguments>
             <argument name="galleryManagement" xsi:type="object">Magento\Catalog\Api\ProductAttributeMediaGalleryManagementInterface\Proxy</argument>
         </arguments>
@@ -16,23 +16,31 @@
     <type name="Ecomni\Webp\Cron\ConvertProductGalleryImages">
         <arguments>
             <argument name="productRepository" xsi:type="object">Magento\Catalog\Api\ProductRepositoryInterface\Proxy</argument>
-            <argument name="converter" xsi:type="object">Ecomni\Webp\Model\Converter\ProductConverter\Proxy</argument>
+            <argument name="converter" xsi:type="object">Ecomni\Webp\Model\Processor\ProductProcessor\Proxy</argument>
         </arguments>
     </type>
     <type name="Ecomni\Webp\Cron\ConvertCategoryImages">
         <arguments>
             <argument name="categoryRepository" xsi:type="object">Magento\Catalog\Api\CategoryRepositoryInterface\Proxy</argument>
-            <argument name="webpConverter" xsi:type="object">Ecomni\Webp\Model\WebpConverter\Proxy</argument>
+            <argument name="converterPool" xsi:type="object">Ecomni\Webp\Model\ConverterPool\Proxy</argument>
         </arguments>
     </type>
     <type name="Ecomni\Webp\Cron\ConvertCmsBlockContent">
         <arguments>
-            <argument name="pageBuilderConverter" xsi:type="object">Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverter\Proxy</argument>
+            <argument name="pageBuilderConverter" xsi:type="object">Ecomni\Webp\Model\Processor\PageBuilderBackgroundImageProcessor\Proxy</argument>
         </arguments>
     </type>
     <type name="Ecomni\Webp\Cron\ConvertCmsPageContent">
         <arguments>
-            <argument name="pageBuilderConverter" xsi:type="object">Ecomni\Webp\Model\Converter\PageBuilderBackgroundImageConverter\Proxy</argument>
+            <argument name="pageBuilderConverter" xsi:type="object">Ecomni\Webp\Model\Processor\PageBuilderBackgroundImageProcessor\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomni\Webp\Model\ConverterPool">
+        <arguments>
+            <argument name="converters" xsi:type="array">
+                <item name="cwebp" xsi:type="object">Ecomni\Webp\Model\Converter\Cwebp</item>
+                <item name="imagick" xsi:type="object">Ecomni\Webp\Model\Converter\Imagick</item>
+            </argument>
         </arguments>
     </type>
     <type name="Magento\Framework\Api\ImageContentValidator">
