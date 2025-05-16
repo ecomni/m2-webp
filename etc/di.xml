@@ -38,8 +38,11 @@
     <type name="Ecomni\Webp\Model\ConverterPool">
         <arguments>
             <argument name="converters" xsi:type="array">
-                <item name="cwebp" xsi:type="object">Ecomni\Webp\Model\Converter\Cwebp</item>
-                <item name="imagick" xsi:type="object">Ecomni\Webp\Model\Converter\Imagick</item>
+                <item name="cwebp" xsi:type="string">cwebp</item>
+                <item name="gd" xsi:type="string">gd</item>
+                <item name="imagick" xsi:type="string">imagick</item>
+                <item name="wpc" xsi:type="string">wpc</item>
+                <item name="ewww" xsi:type="string">ewww</item>
             </argument>
         </arguments>
     </type>

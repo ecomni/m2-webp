@@ -2,9 +2,6 @@
 
 namespace Ecomni\Webp\Cron;
 
-use Magento\Catalog\Model\Category\FileInfo;
-use Magento\Framework\App\Filesystem\DirectoryList;
-
 class ConvertCategoryImages
 {
     public function __construct(
@@ -13,6 +10,7 @@ class ConvertCategoryImages
         protected \Magento\Framework\App\ResourceConnection $resourceConnection,
         protected \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         protected \Ecomni\Webp\Model\ConverterPool $converterPool,
+        protected \Ecomni\Webp\Model\Util\NormalizeUrl $normalizeUrl,
     ) {
     }
 
@@ -34,6 +32,7 @@ class ConvertCategoryImages
             )
             ->where('ccev.attribute_id = ea.attribute_id')
             ->where('ccev.value NOT LIKE "%.webp"');
+
         $categoryIds = $connection->fetchCol($select);
         if (empty($categoryIds)) {
             return;
@@ -41,17 +40,17 @@ class ConvertCategoryImages
 
         $convertedCount = 0;
         foreach ($categoryIds as $categoryId) {
-            $category = $this->categoryRepository->get($categoryId);
-            $imagePath = $this->normalizeFilePath($category->getData('image'));
-            if (!$imagePath) {
-                continue;
-            }
             try {
-                $webp = $this->converterPool->convert($imagePath);
-                if (!$webp) {
+                $category = $this->categoryRepository->get($categoryId);
+                $imagePath = $this->normalizeUrl->normalizeCatalogFilePath($category->getData('image'));
+                if (!$imagePath) {
                     continue;
                 }
-                $category->setData('image', $webp['basename']);
+                $webpPath = $this->converterPool->convert($imagePath);
+                if (!$webpPath) {
+                    continue;
+                }
+                $category->setData('image', basename($webpPath));
                 $this->categoryRepository->save($category);
                 $convertedCount++;
             } catch (\Exception $exception) {
@@ -59,27 +58,5 @@ class ConvertCategoryImages
             }
         }
         $this->logger->info(sprintf('Categories: Converted %d images', $convertedCount));
-    }
-
-    /**
-     * Files can be stored as `{image}` or as `catalog/category/{image}` in the database.
-     * Here we make sure we always work with the `catalog/category/{image}` format.
-     *
-     * @param string $filePath
-     * @return string
-     */
-    protected function normalizeFilePath(string $filePath): string
-    {
-        $filePath = str_replace(
-            [
-                DirectoryList::PUB,
-                DirectoryList::MEDIA,
-                FileInfo::ENTITY_MEDIA_PATH,
-            ],
-            '',
-            $filePath
-        );
-        $filePath = ltrim($filePath, '/');
-        return sprintf('%s/%s', FileInfo::ENTITY_MEDIA_PATH, $filePath);
     }
 }

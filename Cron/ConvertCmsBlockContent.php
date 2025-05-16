@@ -8,7 +8,7 @@ class ConvertCmsBlockContent
         protected \Ecomni\Webp\Model\Config\Config $config,
         protected \Psr\Log\LoggerInterface $logger,
         protected \Ecomni\Webp\Model\Search\PageBuilderSearchCriteria $pageBuilderSearchCriteria,
-        protected \Ecomni\Webp\Model\Processor\PageBuilderBackgroundImageProcessor $pageBuilderConverter,
+        protected \Ecomni\Webp\Model\Processor\PageBuilderBackgroundImageProcessor $imageProcessor,
         protected \Magento\Cms\Api\BlockRepositoryInterface $blockRepository,
     ) {
     }
@@ -28,7 +28,7 @@ class ConvertCmsBlockContent
         $convertedCount = 0;
         foreach ($items as $item) {
             try {
-                $html = $this->pageBuilderConverter->convert($item->getContent(), $convertedCount);
+                $html = $this->imageProcessor->process($item->getContent(), $convertedCount);
                 if ($html !== $item->getContent()) {
                     $item->setContent($html);
                     $this->blockRepository->save($item);

@@ -23,15 +23,17 @@ class ProductProcessor
      * @throws \Exception
      * @return bool
      */
-    public function convert(ProductInterface $product, EntryInterface $entry): bool
+    public function process(ProductInterface $product, EntryInterface $entry): bool
     {
         chdir($this->directoryList->getRoot());
         $mediaPath = $product->getMediaConfig()->getMediaPath($entry->getFile());
-        $webp = $this->converterPool->convert($mediaPath);
+
+        $webpPath = $this->converterPool->convert($mediaPath);
+
         $imageContent = $this->imageContentFactory->create();
-        $imageContent->setBase64EncodedData(base64_encode(file_get_contents($webp['full_path'])));
+        $imageContent->setBase64EncodedData(base64_encode(file_get_contents($webpPath)));
         $imageContent->setType('image/webp');
-        $imageContent->setName($webp['basename']);
+        $imageContent->setName(basename($webpPath));
 
         $newEntry = $this->entryFactory->create();
         $newEntry->setDisabled(false)
@@ -39,7 +41,7 @@ class ProductProcessor
             ->setPosition($entry->getPosition())
             ->setTypes($entry->getTypes())
             ->setContent($imageContent)
-            ->setFile($webp['path'])
+            ->setFile($webpPath)
             ->setMediaType(ImageEntryConverter::MEDIA_TYPE_CODE);
 
         /**
@@ -50,5 +52,6 @@ class ProductProcessor
         if ($this->galleryManagement->create($product->getSku(), $newEntry)) {
             return $this->galleryManagement->remove($product->getSku(), $entry->getId());
         }
+        return false;
     }
 }

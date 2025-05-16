@@ -5,6 +5,8 @@
     "type": "magento2-module",
     "homepage": "https://www.ecomni.nl",
     "require": {
+        "php": "^8.3",
+        "rosell-dk/webp-convert": "*",
         "magento/framework": "*",
         "magento/module-cms": "*",
         "magento/module-catalog": "*",

@@ -2,26 +2,34 @@
 
 namespace Ecomni\Webp\Model;
 
-class ConverterPool implements ConverterInterface
+class ConverterPool
 {
-    /**
-     * @param ConverterInterface[] $converters
-     */
     public function __construct(
+        protected Config\Config $config,
+        protected \Ecomni\Webp\Model\Util\NormalizeUrl $normalizeUrl,
         protected array $converters = [],
     ) {
     }
 
     /**
      * @param string $filePath
-     * @return array
+     * @return string
      * @throws \Exception
      */
-    public function convert(string $filePath): array
+    public function convert(string $filePath): string
     {
+        $filePath = $this->normalizeUrl->normalizeFilePath($filePath);
+        $options = [
+            'quality' => 'auto',
+            'encoding' => 'auto',
+            'max-quality' => $this->config->getQuality(),
+        ];
         foreach ($this->converters as $converter) {
+            $options['converter'] = $converter;
             try {
-                return $converter->convert($filePath);
+                $destPath = str_replace(['.jpg', '.jpeg', '.png'], '.webp', $filePath);
+                \WebPConvert\WebPConvert::convert($filePath, $destPath, $options);
+                return $destPath;
             } catch (\Exception $e) {
                 continue;
             }

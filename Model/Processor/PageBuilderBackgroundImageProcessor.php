@@ -8,16 +8,17 @@ class PageBuilderBackgroundImageProcessor
 {
     public function __construct(
         protected \Magento\Framework\Serialize\Serializer\Json $json,
-        protected \Ecomni\Webp\Model\Util\LocalUrl $localUrl,
         protected \Ecomni\Webp\Model\ConverterPool $converterPool,
         protected \Magento\MediaGallerySynchronizationApi\Model\CreateAssetFromFileInterface $createAssetFromFile,
         protected \Magento\MediaGalleryApi\Api\SaveAssetsInterface $saveAssets,
         protected \Psr\Log\LoggerInterface $logger,
         protected \Magento\Framework\Filesystem\DirectoryList $directoryList,
+        protected \Ecomni\Webp\Model\Util\IsConvertible $isConvertible,
+        protected \Ecomni\Webp\Model\Util\NormalizeUrl $normalizeUrl,
     ) {
     }
 
-    public function convert(string $html, int &$convertedCount): string
+    public function process(string $html, int &$convertedCount): string
     {
         chdir($this->directoryList->getRoot());
         $document = new \DOMDocument();
@@ -38,127 +39,56 @@ class PageBuilderBackgroundImageProcessor
                 continue;
             }
 
-            $hasChanges = false;
             $assets = [];
 
-            if ($this->isConvertibleImage($images['desktop_image'] ?? '')) {
-                $desktopImageUrl = $this->normalizeFilePath($images['desktop_image']);
-                if ($webp = $this->processImage($desktopImageUrl)) {
-                    /** @var \Magento\MediaGalleryApi\Api\Data\AssetInterface $asset */
-                    $images['desktop_image'] = $this->encodeFilePath($webp['path']);
-                    try {
-                        $assets[] = $this->saveAsset($webp['path']);
-                        $hasChanges = true;
-                        $convertedCount++;
-                    } catch (\Exception $e) {
-                        $this->logger->critical($e->getMessage());
-                        continue;
-                    }
+            if (isset($images['desktop_image'])) {
+                if ($desktopPath = $this->processImage($images['desktop_image'], $assets)) {
+                    $images['desktop_image'] = $desktopPath;
                 }
             }
 
-            if ($this->isConvertibleImage($images['mobile_image'] ?? '')) {
-                $mobileImageUrl = $this->normalizeFilePath($images['mobile_image']);
-                if ($webp = $this->processImage($mobileImageUrl)) {
-                    $images['mobile_image'] = $this->encodeFilePath($webp['path']);
-                    try {
-                        $assets[] = $this->saveAsset($webp['path']);
-                        $hasChanges = true;
-                    } catch (\Exception $e) {
-                        $this->logger->critical($e->getMessage());
-                        continue;
-                    }
+            if (isset($images['mobile_image'])) {
+                if ($mobilePath = $this->processImage($images['mobile_image'], $assets)) {
+                    $images['mobile_image'] = $mobilePath;
                 }
             }
 
-            if ($hasChanges) {
+            if (count($assets)) {
                 $this->saveAssets->execute($assets);
                 $images = json_encode($images, JSON_UNESCAPED_SLASHES);
                 $backgroundImages->nodeValue = $images;
                 $node->setAttribute('data-background-images', $backgroundImages->nodeValue);
                 $html = $document->saveHTML();
+                $convertedCount += count($assets);
             }
         }
         return $html;
     }
 
+    protected function processImage(string $filePath, array &$assets): ?string
+    {
+        if (!$this->isConvertible->isAllowedByImageUrl($filePath)) {
+            return null;
+        }
+        if (!$this->isConvertible->isConvertibleImage($filePath)) {
+            return null;
+        }
+
+        try {
+            $filePath = $this->normalizeUrl->normalizeInlineFilePath($filePath);
+            $webpPath = $this->converterPool->convert($filePath);
+            $webpPath = $this->normalizeUrl->encodeFilePath($webpPath);
+            $assets[] = $this->saveAsset($webpPath);
+            return $webpPath;
+        } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
+        }
+        return null;
+    }
+
     protected function saveAsset(string $path): \Magento\MediaGalleryApi\Api\Data\AssetInterface
     {
         $assetPath = ltrim(str_replace([DirectoryList::PUB, DirectoryList::MEDIA], '', $path), '/');
-        $asset = $this->createAssetFromFile->execute($assetPath);
-        return $asset;
-    }
-
-    protected function processImage(string $imageUrl): ?array
-    {
-        if (!$this->isAllowedByImageUrl($imageUrl)) {
-            return null;
-        }
-        try {
-            return $this->converterPool->convert($imageUrl);
-        } catch (\Exception $e) {
-            $this->logger->critical($e->getMessage());
-            return null;
-        }
-    }
-
-    protected function isAllowedByImageUrl(string $imageUrl): bool
-    {
-        if (empty($imageUrl)) {
-            return false;
-        }
-        if (!preg_match('/\.(jpg|jpeg|png)/i', $imageUrl)) {
-            return false;
-        }
-        if (str_starts_with('data:', $imageUrl)) {
-            return false;
-        }
-        if (!$this->localUrl->isLocal($imageUrl)) {
-            return false;
-        }
-        if (str_contains($imageUrl, '/media/captcha/')) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Convert {{media url=xxx}} into media/xxx.
-     *
-     * @param string $filePath
-     * @return string
-     */
-    protected function normalizeFilePath(string $filePath): string
-    {
-        $filePath = str_replace(
-            [
-                DirectoryList::PUB,
-                DirectoryList::MEDIA,
-                '{{',
-                'url=',
-                '}}'
-            ],
-            '',
-            $filePath
-        );
-        $filePath = ltrim($filePath);
-        return sprintf('/%s/%s', DirectoryList::MEDIA, $filePath);
-    }
-
-    /**
-     * Convert media/xxx into {{media url=xxx}}.
-     *
-     * @param string $filePath
-     * @return string
-     */
-    protected function encodeFilePath(string $filePath): string
-    {
-        $filePath = ltrim(str_replace('media', '', $filePath), '/');
-        return sprintf('{{media url=%s}}', $filePath);
-    }
-
-    protected function isConvertibleImage(string $path): bool
-    {
-        return str_contains($path, '.png') || str_contains($path, '.jpg') || str_contains($path, '.jpeg');
+        return $this->createAssetFromFile->execute($assetPath);
     }
 }
