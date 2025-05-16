@@ -23,7 +23,7 @@ class ProductProcessor
      * @throws \Exception
      * @return bool
      */
-    public function process(ProductInterface $product, EntryInterface $entry): bool
+    public function process(ProductInterface $product, EntryInterface $entry): void
     {
         chdir($this->directoryList->getRoot());
         $mediaPath = $product->getMediaConfig()->getMediaPath($entry->getFile());
@@ -50,8 +50,7 @@ class ProductProcessor
          * and create a new one. Only remove $entry when the $newEntry is successfully created, though.
          */
         if ($this->galleryManagement->create($product->getSku(), $newEntry)) {
-            return $this->galleryManagement->remove($product->getSku(), $entry->getId());
+            $this->galleryManagement->remove($product->getSku(), $entry->getId());
         }
-        return false;
     }
 }
